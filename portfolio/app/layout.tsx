@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import TabsNav from "@/components/ui/tabs-nav";
+import Navbar from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,16 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="fixed inset-x-0 top-0 z-30">
-          <div className="backdrop-blur-sm bg-black/30">
-            <div className="container mx-auto px-6 py-3 flex items-center justify-between">
-              <div className="text-lg font-semibold text-white">Cloudora <span className="text-slate-300">Tech</span></div>
-              <nav>
-                <TabsNav />
-              </nav>
-            </div>
-          </div>
-        </header>
+        <Navbar/>
 
         <div className="pt-20">{children}</div>
       </body>

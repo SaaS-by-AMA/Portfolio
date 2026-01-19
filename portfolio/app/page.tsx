@@ -1,10 +1,13 @@
+import { div } from 'framer-motion/client';
 import { GridScan } from '../components/GridScan';
+import ServicesSection from '@/components/ServicesSection';
 
 export default function Home() {
   return (
+    <div>
     <div className="min-h-screen w-full relative font-sans">
       <div className="absolute inset-0 bg-[#071032]" />
-      <div className="absolute inset-0">
+      <div className="fixed inset-0">
         <GridScan
           sensitivity={0.55}
           lineThickness={1}
@@ -31,6 +34,11 @@ export default function Home() {
           </p>
         </section>
       </main>
+
+
+      
+    </div>
+    <ServicesSection/>
     </div>
   );
 }
