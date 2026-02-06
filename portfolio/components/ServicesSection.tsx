@@ -2,217 +2,239 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { 
-  Globe, Smartphone, Zap, Rocket, Bug, Sparkles,
-  ArrowRight
-} from "lucide-react";
+import { Globe, Smartphone, Zap, Cloud, Code, Rocket, ArrowRight } from "lucide-react";
+import Hyperspeed from "./Hyperspeed";
 
 const services = [
   {
     id: 1,
+    number: "01",
     title: "Web Development",
-    description: "Build stunning, high-performance web applications with cutting-edge technologies",
+    description:
+      "Modern, responsive websites and web applications built with cutting-edge technologies. From landing pages to complex portals.",
     icon: Globe,
-    gradient: "from-cyan-500 via-blue-500 to-purple-500",
-    gradientText: "from-cyan-400 to-blue-500",
+    tags: ["React", "Next.js", "Node.js", "APIs"],
   },
   {
     id: 2,
-    title: "Mobile App Development",
-    description: "Create intuitive mobile experiences for iOS and Android platforms",
+    number: "02",
+    title: "Mobile Apps",
+    description:
+      "Native and cross-platform mobile applications for iOS and Android. Intuitive interfaces, seamless performance.",
     icon: Smartphone,
-    gradient: "from-purple-500 via-pink-500 to-red-500",
-    gradientText: "from-purple-400 to-pink-500",
+    tags: ["React Native", "Flutter", "iOS", "Android"],
   },
   {
     id: 3,
-    title: "AI Automations",
-    description: "Leverage AI to automate workflows and enhance business intelligence",
+    number: "03",
+    title: "AI Automation",
+    description:
+      "Intelligent automation solutions powered by AI. Streamline workflows, enhance productivity, and reduce costs.",
     icon: Zap,
-    gradient: "from-yellow-500 via-orange-500 to-red-500",
-    gradientText: "from-yellow-400 to-orange-500",
+    tags: ["Machine Learning", "ChatBots", "Process Automation", "AI APIs"],
   },
   {
     id: 4,
-    title: "Deployment Services",
-    description: "Seamless deployment solutions with zero-downtime and optimal scalability",
-    icon: Rocket,
-    gradient: "from-green-500 via-emerald-500 to-teal-500",
-    gradientText: "from-green-400 to-emerald-500",
+    number: "04",
+    title: "SaaS Solutions",
+    description:
+      "End-to-end SaaS product development. From MVP to scale, we build platforms that grow with your business.",
+    icon: Cloud,
+    tags: ["Cloud Native", "Scalable", "Secure", "Multi-tenant"],
   },
   {
     id: 5,
-    title: "Error Debugging",
-    description: "Identify and resolve issues quickly with comprehensive debugging expertise",
-    icon: Bug,
-    gradient: "from-indigo-500 via-purple-500 to-pink-500",
-    gradientText: "from-indigo-400 to-purple-500",
+    number: "05",
+    title: "Desktop Apps",
+    description:
+      "Cross-platform desktop applications with native performance. Enterprise software, productivity tools, and utilities.",
+    icon: Code,
+    tags: ["Electron", "Tauri", "Windows", "macOS"],
   },
   {
     id: 6,
-    title: "Performance Optimization",
-    description: "Maximize speed and efficiency across all your digital infrastructure",
-    icon: Sparkles,
-    gradient: "from-cyan-500 via-teal-500 to-green-500",
-    gradientText: "from-cyan-400 to-teal-500",
+    number: "06",
+    title: "DevOps & Cloud",
+    description:
+      "Cloud infrastructure, CI/CD pipelines, and DevOps practices. Deploy faster, scale effortlessly.",
+    icon: Rocket,
+    tags: ["AWS", "Docker", "Kubernetes", "CI/CD"],
   },
 ];
 
 export default function ServicesSection() {
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, id: number) => {
-    setMousePos({ x: e.clientX, y: e.clientY });
-  };
-
-  // Lightweight animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.06,
-        delayChildren: 0.05
-      }
-    }
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 40, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
-      }
-    }
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
   };
 
   return (
-    <section className="relative w-full py-20 bg-slate-950 overflow-hidden">
-      {/* Subtle background accents */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl opacity-30" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl opacity-30" />
+    <section id="services" className="relative w-full py-24 md:py-32 bg-[var(--background)] overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[var(--primary)]/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[var(--primary)]/20 to-transparent" />
+        <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-[var(--primary)]/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/3 left-0 w-[300px] h-[300px] bg-[var(--secondary)]/5 rounded-full blur-[100px]" />
       </div>
 
-      <div className="container relative mx-auto px-6">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-16"
-        >
-          <div className="inline-flex items-center gap-2 mb-6">
-            <Sparkles className="w-4 h-4 text-blue-400" />
-            <span className="text-sm font-semibold text-blue-400 tracking-wider">OUR SERVICES</span>
-          </div>
-          
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-            What We Build
-          </h2>
-          
-          <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Delivering exceptional digital solutions with precision and excellence
-          </p>
-        </motion.div>
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: "linear-gradient([var(--primary)] 1px, transparent 1px), linear-gradient(90deg, [var(--primary)] 1px, transparent 1px)",
+          backgroundSize: "40px 40px"
+        }}
+      />
+
+      <div className="container relative z-10 px-4 md:px-6 mx-auto">
+        {/* Header */}
+        <div className="mb-20 text-center max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center justify-center gap-4 mb-4"
+          >
+            <div className="h-px w-8 bg-[var(--primary)]" />
+            <span className="text-sm font-semibold text-[var(--primary)] tracking-[0.2em] uppercase">
+              Our Expertise
+            </span>
+            <div className="h-px w-8 bg-[var(--primary)]" />
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-4xl md:text-5xl font-bold mb-6 tracking-tight text-white"
+          >
+            Premium <span className="gradient-text">Digital Solutions</span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-[var(--text-muted)] text-lg leading-relaxed"
+          >
+            We blend aesthetic excellence with technical precision to build digital products that define brands.
+          </motion.p>
+        </div>
 
         {/* Services Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-5"
-        >
-          {services.map((service) => {
-            const Icon = service.icon;
-            const isHovered = hoveredCard === service.id;
-            
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.map((service, index) => {
+            const isHovered = hoveredIndex === index;
+
             return (
               <motion.div
-                key={service.id}
-                onMouseEnter={() => setHoveredCard(service.id)}
-                onMouseLeave={() => setHoveredCard(null)}
-                className="group relative bg-slate-900/50 rounded-2xl border border-slate-700/50 overflow-hidden cursor-pointer backdrop-blur-sm"
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                className={`group relative p-8 rounded-3xl border border-[var(--surface-highlight)] transition-all duration-500 overflow-hidden
+                                ${isHovered
+                    ? "bg-[var(--surface)]/80 border-[var(--primary)]/40 shadow-[0_0_40px_rgba(73,34,229,0.15)]"
+                    : "bg-[var(--surface)]/40 hover:bg-[var(--surface)]/60"
+                  }
+                            `}
               >
-                {/* Smooth border and shadow transition */}
-                <motion.div
-                  animate={{
-                    borderColor: isHovered ? "rgba(96, 165, 250, 0.5)" : "rgba(71, 85, 105, 0.3)",
-                    boxShadow: isHovered 
-                      ? "0 20px 40px rgba(59, 130, 246, 0.2)" 
-                      : "0 4px 12px rgba(0, 0, 0, 0.3)"
-                  }}
-                  transition={{ duration: 0.4 }}
-                  className="absolute inset-0 rounded-2xl pointer-events-none border"
+                {/* Hover Gradient Border */}
+                <div
+                  className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[var(--primary)] via-[var(--secondary)] to-[var(--primary)] origin-left rounded-t-2xl
+                                    transition-transform duration-500 ease-out
+                                    ${isHovered ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"}
+                                `}
                 />
 
-                {/* Content */}
-                <div className="relative p-7 h-full flex flex-col">
-                  {/* Icon - Always visible */}
-                  <motion.div
-                    animate={{
-                      scale: isHovered ? 1.08 : 1,
-                      y: isHovered ? -2 : 0,
-                    }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="mb-5 inline-flex"
-                  >
-                    <div className={cn(
-                      "w-14 h-14 rounded-xl flex items-center justify-center transition-colors duration-400",
-                      isHovered ? "bg-blue-500/30" : "bg-slate-800"
-                    )}>
-                      <Icon className={cn(
-                        "w-7 h-7 transition-colors duration-400",
-                        isHovered ? "text-blue-400" : "text-slate-300"
-                      )} />
-                    </div>
-                  </motion.div>
-
-                  {/* Title - Always visible */}
-                  <motion.h3
-                    animate={{
-                      color: isHovered ? "#60a5fa" : "#f1f5f9",
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="text-xl font-bold mb-2 transition-colors"
-                  >
-                    {service.title}
-                  </motion.h3>
-                  
-                  {/* Description */}
-                  <motion.p
-                    animate={{
-                      color: isHovered ? "#cbd5e1" : "#94a3b8",
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="text-slate-400 text-sm leading-relaxed flex-grow transition-colors"
-                  >
-                    {service.description}
-                  </motion.p>
+                {/* Background Number */}
+                <div
+                  className={`absolute -right-4 -top-4 text-9xl font-bold opacity-5 pointer-events-none select-none
+                                  transition-all duration-500 ${isHovered ? "text-[var(--primary)]/30" : "text-[var(--surface-highlight)]/50"}
+                                `}
+                >
+                  0{index + 1}
                 </div>
 
-                {/* Top accent line on hover */}
-                <motion.div
-                  animate={{
-                    scaleX: isHovered ? 1 : 0,
-                    originX: 0,
-                  }}
-                  transition={{ duration: 0.4 }}
-                  className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-cyan-400"
-                />
+                <div className="relative z-10">
+                  {/* Icon */}
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300
+                                    ${isHovered
+                      ? "bg-[var(--primary)]/20 shadow-[0_0_20px_rgba(73,34,229,0.3)]"
+                      : "bg-[var(--surface-highlight)]"
+                    }
+                                `}>
+                    <service.icon
+                      className={`w-7 h-7 transition-colors duration-300 ${isHovered ? "text-[var(--primary)]" : "text-[var(--text-muted)]"}
+                                        `}
+                    />
+                  </div>
+
+                  {/* Content */}
+                  <h3 className={`text-xl font-bold mb-3 transition-colors duration-300 ${isHovered ? "text-[var(--primary)]" : "text-white"}
+                                `}>
+                    {service.title}
+                  </h3>
+                  <p className="text-[var(--text-muted)] mb-6 leading-relaxed">
+                    {service.description}
+                  </p>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 mb-8">
+                    {service.tags.map((tag, i) => (
+                      <span key={i} className={`text-xs px-3 py-1 rounded-full transition-colors duration-300
+                                            ${isHovered
+                          ? "bg-[var(--primary)]/10 text-[var(--foreground)] border border-[var(--primary)]/30"
+                          : "bg-[var(--surface-highlight)] text-[var(--text-dim)] border border-transparent"
+                        }
+                                        `}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Learn More Link */}
+                  <div className={`flex items-center text-sm font-semibold transition-all duration-300
+                                    ${isHovered ? "text-[var(--primary)] translate-x-2" : "text-[var(--text-muted)]"}
+                                `}>
+                    Learn more <ArrowRight className="w-4 h-4 ml-2" />
+                  </div>
+                </div>
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
 
-
+        <div className="mt-20 text-center">
+          <p className="text-[var(--text-muted)] mb-6">Looking for a custom solution?</p>
+          <div className="flex justify-center gap-6">
+            <a href="#contact" className="text-[var(--primary)] hover:underline">
+              Get in touch
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
