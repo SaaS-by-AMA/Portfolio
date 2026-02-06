@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { DottedSurface } from "@/components/ui/dotted-surface";
 
 const HeroSection = () => {
   const containerVariants = {
@@ -29,11 +30,8 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-[var(--background)]">
-      {/* Animated Background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 via-transparent to-[var(--secondary)]/10" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(73,34,229,0.15),transparent_50%)]" />
-      </div>
+      {/* Dotted Surface Animation Background */}
+      <DottedSurface />
 
       {/* Gradient overlay for better text readability */}
       <div className="absolute inset-0 z-10 bg-gradient-to-b from-[var(--background)]/40 via-transparent to-[var(--background)]/60 pointer-events-none" />
