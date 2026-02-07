@@ -1,6 +1,6 @@
 import { useEffect, useRef, FC } from 'react';
 import * as THREE from 'three';
-import { BloomEffect, EffectComposer, EffectPass, RenderPass, SMAAEffect, SMAAPreset } from 'postprocessing';
+import { BloomEffect, EffectComposer, EffectPass, RenderPass } from 'postprocessing';
 
 interface Distortion {
   uniforms: Record<string, { value: any }>;
@@ -58,8 +58,8 @@ interface HyperspeedProps {
 }
 
 const defaultOptions: HyperspeedOptions = {
-  onSpeedUp: () => {},
-  onSlowDown: () => {},
+  onSpeedUp: () => { },
+  onSlowDown: () => { },
   distortion: 'turbulentDistortion',
   length: 400,
   roadWidth: 10,
@@ -150,11 +150,11 @@ const distortions: Distortions = {
       const uAmp = mountainUniforms.uAmp.value;
       const distortion = new THREE.Vector3(
         Math.cos(progress * Math.PI * uFreq.x + time) * uAmp.x -
-          Math.cos(movementProgressFix * Math.PI * uFreq.x + time) * uAmp.x,
+        Math.cos(movementProgressFix * Math.PI * uFreq.x + time) * uAmp.x,
         nsin(progress * Math.PI * uFreq.y + time) * uAmp.y -
-          nsin(movementProgressFix * Math.PI * uFreq.y + time) * uAmp.y,
+        nsin(movementProgressFix * Math.PI * uFreq.y + time) * uAmp.y,
         nsin(progress * Math.PI * uFreq.z + time) * uAmp.z -
-          nsin(movementProgressFix * Math.PI * uFreq.z + time) * uAmp.z
+        nsin(movementProgressFix * Math.PI * uFreq.z + time) * uAmp.z
       );
       const lookAtAmp = new THREE.Vector3(2, 2, 2);
       const lookAtOffset = new THREE.Vector3(0, 0, -5);
@@ -182,9 +182,9 @@ const distortions: Distortions = {
       const uAmp = xyUniforms.uAmp.value;
       const distortion = new THREE.Vector3(
         Math.cos(progress * Math.PI * uFreq.x + time) * uAmp.x -
-          Math.cos(movementProgressFix * Math.PI * uFreq.x + time) * uAmp.x,
+        Math.cos(movementProgressFix * Math.PI * uFreq.x + time) * uAmp.x,
         Math.sin(progress * Math.PI * uFreq.y + time + Math.PI / 2) * uAmp.y -
-          Math.sin(movementProgressFix * Math.PI * uFreq.y + time + Math.PI / 2) * uAmp.y,
+        Math.sin(movementProgressFix * Math.PI * uFreq.y + time + Math.PI / 2) * uAmp.y,
         0
       );
       const lookAtAmp = new THREE.Vector3(2, 0.4, 1);
@@ -213,9 +213,9 @@ const distortions: Distortions = {
       const uAmp = LongRaceUniforms.uAmp.value;
       const distortion = new THREE.Vector3(
         Math.sin(progress * Math.PI * uFreq.x + time) * uAmp.x -
-          Math.sin(camProgress * Math.PI * uFreq.x + time) * uAmp.x,
+        Math.sin(camProgress * Math.PI * uFreq.x + time) * uAmp.x,
         Math.sin(progress * Math.PI * uFreq.y + time) * uAmp.y -
-          Math.sin(camProgress * Math.PI * uFreq.y + time) * uAmp.y,
+        Math.sin(camProgress * Math.PI * uFreq.y + time) * uAmp.y,
         0
       );
       const lookAtAmp = new THREE.Vector3(1, 1, 0);
@@ -435,7 +435,7 @@ class CarLights {
   colors: number[] | THREE.Color;
   speed: [number, number];
   fade: THREE.Vector2;
-  mesh!: THREE.Mesh<THREE.InstancedBufferGeometry, THREE.ShaderMaterial>;
+  mesh!: THREE.Mesh;
 
   constructor(
     webgl: App,
@@ -456,7 +456,7 @@ class CarLights {
     const curve = new THREE.LineCurve3(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1));
     const geometry = new THREE.TubeGeometry(curve, 40, 1, 8, false);
 
-    const instanced = new THREE.InstancedBufferGeometry().copy(geometry as any) as THREE.InstancedBufferGeometry;
+    const instanced = (new (THREE as any).InstancedBufferGeometry()).copy(geometry as any) as any;
     instanced.instanceCount = options.lightPairsPerRoadWay * 2;
 
     const laneWidth = options.roadWidth / options.lanesPerRoad;
@@ -532,7 +532,7 @@ class CarLights {
       )
     });
 
-    material.onBeforeCompile = shader => {
+    material.onBeforeCompile = (shader: any) => {
       shader.vertexShader = shader.vertexShader.replace(
         '#include <getDistortion_vertex>',
         typeof this.options.distortion === 'object' ? this.options.distortion.getDistortion : ''
@@ -604,7 +604,7 @@ const carLightsVertex = `
 class LightsSticks {
   webgl: App;
   options: HyperspeedOptions;
-  mesh!: THREE.Mesh<THREE.InstancedBufferGeometry, THREE.ShaderMaterial>;
+  mesh!: THREE.Mesh;
 
   constructor(webgl: App, options: HyperspeedOptions) {
     this.webgl = webgl;
@@ -614,7 +614,7 @@ class LightsSticks {
   init() {
     const options = this.options;
     const geometry = new THREE.PlaneGeometry(1, 1);
-    const instanced = new THREE.InstancedBufferGeometry().copy(geometry as any) as THREE.InstancedBufferGeometry;
+    const instanced = (new (THREE as any).InstancedBufferGeometry()).copy(geometry as any) as any;
     const totalSticks = options.totalSideLightSticks;
     instanced.instanceCount = totalSticks;
 
@@ -662,7 +662,7 @@ class LightsSticks {
       )
     });
 
-    material.onBeforeCompile = shader => {
+    material.onBeforeCompile = (shader: any) => {
       shader.vertexShader = shader.vertexShader.replace(
         '#include <getDistortion_vertex>',
         typeof this.options.distortion === 'object' ? this.options.distortion.getDistortion : ''
@@ -798,7 +798,7 @@ class Road {
       )
     });
 
-    material.onBeforeCompile = shader => {
+    material.onBeforeCompile = (shader: any) => {
       shader.vertexShader = shader.vertexShader.replace(
         '#include <getDistortion_vertex>',
         typeof this.options.distortion === 'object' ? this.options.distortion.getDistortion : ''
@@ -922,7 +922,7 @@ class App {
   scene: THREE.Scene;
   renderPass!: RenderPass;
   bloomPass!: EffectPass;
-  clock: THREE.Clock;
+  clock: any;
   assets: Record<string, any>;
   disposed: boolean;
   road: Road;
@@ -1032,46 +1032,12 @@ class App {
       })
     );
 
-    const smaaPass = new EffectPass(
-      this.camera,
-      new SMAAEffect({
-        preset: SMAAPreset.MEDIUM
-      })
-    );
-    this.renderPass.renderToScreen = false;
-    this.bloomPass.renderToScreen = false;
-    smaaPass.renderToScreen = true;
-
     this.composer.addPass(this.renderPass);
     this.composer.addPass(this.bloomPass);
-    this.composer.addPass(smaaPass);
   }
 
   loadAssets(): Promise<void> {
-    const assets = this.assets;
-    return new Promise(resolve => {
-      const manager = new THREE.LoadingManager(resolve);
-
-      const searchImage = new Image();
-      const areaImage = new Image();
-      assets.smaa = {};
-
-      searchImage.addEventListener('load', function () {
-        assets.smaa.search = this;
-        manager.itemEnd('smaa-search');
-      });
-
-      areaImage.addEventListener('load', function () {
-        assets.smaa.area = this;
-        manager.itemEnd('smaa-area');
-      });
-
-      manager.itemStart('smaa-search');
-      manager.itemStart('smaa-area');
-
-      searchImage.src = SMAAEffect.searchImageDataURL;
-      areaImage.src = SMAAEffect.areaImageDataURL;
-    });
+    return Promise.resolve();
   }
 
   init() {
@@ -1199,7 +1165,7 @@ class App {
   }
 
   setSize(width: number, height: number, updateStyles: boolean) {
-    this.composer.setSize(width, height, updateStyles);
+    this.composer.setSize(width, height);
   }
 
   tick() {

@@ -9,7 +9,7 @@ export default function TabsNav() {
     () => [
       { title: "Home", icon: Home },
       { title: "Notifications", icon: Bell },
-      { type: "separator" },
+      { type: "separator" as const },
       { title: "Settings", icon: Settings },
       { title: "Support", icon: HelpCircle },
       { title: "Security", icon: Shield },

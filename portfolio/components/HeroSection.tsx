@@ -23,7 +23,7 @@ const HeroSection = () => {
       y: 0,
       transition: {
         duration: 1,
-        ease: "easeOut",
+        ease: "easeOut" as const,
       },
     },
   };
